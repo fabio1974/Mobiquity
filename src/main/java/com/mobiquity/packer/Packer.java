@@ -118,14 +118,6 @@ public class Packer {
 
 
 
-  public static void main(String[] args) {
-    try {
-      var filePath = "/home/fabiobarros/Documents/Mobiquity/src/main/test/resources/example_input";
-      pack(filePath);
-    } catch (APIException e) {
-      e.printStackTrace();
-    }
-  }
 
 }
 
