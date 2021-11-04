@@ -1,7 +1,11 @@
 package com.mobiquity.packer;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.mobiquity.combinations.AlgApache;
+import com.mobiquity.combinations.AlgIterative;
 import com.mobiquity.combinations.CombinationAlgorithm;
-import com.mobiquity.combinations.IterativeCombination;
+import com.mobiquity.combinations.AlgGuava;
 import com.mobiquity.exception.APIException;
 import com.mobiquity.exception.APIExceptionConsumer;
 import com.mobiquity.model.Item;
@@ -25,7 +29,7 @@ public class Packer {
    * Exposed lib method to mount the ideal package based on the rules of weight and max cost.
    * I'm using a strategy pattern to instantiate a different algorithm to calculate combinations.
    * So, any combination algorithm can be injected into the PackMounter
-   * @param filePath
+   * @param filePath the absolute path to the input file
    * @return an string as specified at the output file
    * @throws APIException
    */
@@ -33,22 +37,27 @@ public class Packer {
 
     var file = new File(filePath);
     StringBuilder sb = new StringBuilder();
-    CombinationAlgorithm combinationAlgorithm = new IterativeCombination();
+    CombinationAlgorithm combinationAlgorithm = new AlgIterative();
+    //CombinationAlgorithm combinationAlgorithm = new AlgApache();
+    //CombinationAlgorithm combinationAlgorithm = new AlgGuava();
     PackMounter mounter = new PackMounter(combinationAlgorithm);
 
     try (Stream<String> fileLines = Files.lines(file.toPath(), Charset.forName(StandardCharsets.UTF_8.name()))) {
+
+      //iterates over each line of the input file to generate the StringBuilder  output
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
         Pack pack = buildPack(packLine);
         int[] mountedPackIndexes = mounter.mount(pack);
         sb.append(printIndexes(mountedPackIndexes)).append("\n");
       }));
-      System.out.println(sb);
+
       return sb.toString();
 
     } catch (Exception ex) {
       throw new APIException("API error:",ex);
     }
   }
+
 
 
   /**
@@ -92,7 +101,6 @@ public class Packer {
   }
 
 
-
   /**
    * String representation of a line in the output
    * */
@@ -116,8 +124,4 @@ public class Packer {
     };
   }
 
-
-
-
 }
-

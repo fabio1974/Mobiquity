@@ -1,0 +1,46 @@
+import com.mobiquity.combinations.AlgApache;
+import com.mobiquity.combinations.AlgGuava;
+import com.mobiquity.combinations.AlgIterative;
+import com.mobiquity.combinations.CombinationAlgorithm;
+import com.mobiquity.exception.APIException;
+import com.mobiquity.model.Pack;
+import com.mobiquity.packer.Packer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class BasicTests {
+
+
+    @Test
+    public void checkingIterativeCombinationAlgorithm() {
+        CombinationAlgorithm generator = new AlgIterative();
+        var selection = generator.combine(5, 2);
+        assertEquals(10, selection.size());
+    }
+
+    @Test
+    public void checkingGuavaCombinationAlgorithm() {
+        CombinationAlgorithm generator = new AlgGuava();
+        var selection = generator.combine(5, 2);
+        assertEquals(10, selection.size());
+    }
+
+    @Test
+    public void checkingApacheCombinationAlgorithm() {
+        CombinationAlgorithm generator = new AlgApache();
+        var selection = generator.combine(5, 2);
+        assertEquals(10, selection.size());
+    }
+
+    @Test
+    public void basicReturn() throws APIException {
+        String r = "4\n" +
+                "-\n" +
+                "2,7\n" +
+                "8,9\n";
+        var filePath = "/home/fabiobarros/git/Mobiquity/src/test/resources/example_input";
+        assertEquals(r,Packer.pack(filePath));
+    }
+
+}
