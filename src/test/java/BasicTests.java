@@ -3,7 +3,6 @@ import com.mobiquity.combinations.AlgGuava;
 import com.mobiquity.combinations.AlgIterative;
 import com.mobiquity.combinations.CombinationAlgorithm;
 import com.mobiquity.exception.APIException;
-import com.mobiquity.model.Pack;
 import com.mobiquity.packer.Packer;
 import org.junit.jupiter.api.Test;
 
@@ -15,21 +14,21 @@ public class BasicTests {
     @Test
     public void checkingIterativeCombinationAlgorithm() {
         CombinationAlgorithm generator = new AlgIterative();
-        var selection = generator.combine(5, 2);
+        var selection = generator.calculateCombinations(5, 2);
         assertEquals(10, selection.size());
     }
 
     @Test
     public void checkingGuavaCombinationAlgorithm() {
         CombinationAlgorithm generator = new AlgGuava();
-        var selection = generator.combine(5, 2);
+        var selection = generator.calculateCombinations(5, 2);
         assertEquals(10, selection.size());
     }
 
     @Test
     public void checkingApacheCombinationAlgorithm() {
         CombinationAlgorithm generator = new AlgApache();
-        var selection = generator.combine(5, 2);
+        var selection = generator.calculateCombinations(5, 2);
         assertEquals(10, selection.size());
     }
 

@@ -8,10 +8,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class to implement third part combination calculus (Apache Commons in this case).
+ * This class is not used in the program. The gaol here
+ * is just to show the extensibility by providing any algorithm.
+ * The convertType method is not even performative. This was written just for completeness of tests.
+ */
 public class AlgApache implements CombinationAlgorithm{
 
     @Override
-    public List<List<Integer>> combine(int N, int R) {
+    public List<List<Integer>> calculateCombinations(int N, int R) {
         Iterator<int[]> combinations = CombinatoricsUtils.combinationsIterator(N, R);
         return convertType(combinations);
     }

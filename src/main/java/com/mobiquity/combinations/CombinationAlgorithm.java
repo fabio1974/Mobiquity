@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface CombinationAlgorithm {
 
-    List<List<Integer>> combine(int N, int R);
+    List<List<Integer>> calculateCombinations(int N, int R);
 
 }

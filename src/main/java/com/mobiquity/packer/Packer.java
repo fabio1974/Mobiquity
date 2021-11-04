@@ -1,11 +1,7 @@
 package com.mobiquity.packer;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-import com.mobiquity.combinations.AlgApache;
 import com.mobiquity.combinations.AlgIterative;
 import com.mobiquity.combinations.CombinationAlgorithm;
-import com.mobiquity.combinations.AlgGuava;
 import com.mobiquity.exception.APIException;
 import com.mobiquity.exception.APIExceptionConsumer;
 import com.mobiquity.model.Item;
@@ -15,7 +11,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,18 +33,16 @@ public class Packer {
 
     var file = new File(filePath);
     StringBuilder sb = new StringBuilder();
-    CombinationAlgorithm combinationAlgorithm = new AlgIterative();
-    //CombinationAlgorithm combinationAlgorithm = new AlgApache();
-    //CombinationAlgorithm combinationAlgorithm = new AlgGuava();
+    CombinationAlgorithm combinationAlgorithm = new AlgIterative(); //or new AlgApache()  or  new new AlgGuava()
     PackMounter mounter = new PackMounter(combinationAlgorithm);
 
     try (Stream<String> fileLines = Files.lines(file.toPath(), Charset.forName(StandardCharsets.UTF_8.name()))) {
 
-      //iterates over each line of the input file to generate the StringBuilder  output
+      //iterates over each line of the input file
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
         Pack pack = buildPack(packLine);
         int[] mountedPackIndexes = mounter.mount(pack);
-        sb.append(printIndexes(mountedPackIndexes)).append("\n");
+        sb.append(formatReturnLine(mountedPackIndexes)).append("\n");
       }));
 
       return sb.toString();
@@ -74,7 +68,7 @@ public class Packer {
     //setting weight limit
     pack.setWeighLimit(Double.parseDouble(packChuncks[0]));
 
-    //adding all available items from file
+    //adding all available items from the file line
     for (String it : packChuncks[1].trim().split("\\s+")) {
       var itemChuncks = it.replaceAll("[()]", "").split(",");
       Item item = buildItem(itemChuncks);
@@ -104,8 +98,9 @@ public class Packer {
   /**
    * String representation of a line in the output
    * */
-  private static String printIndexes(int[] indexes){
-    return indexes.length==0? "-" : Arrays.stream(indexes).mapToObj(String::valueOf).collect(Collectors.joining(","));
+  private static String formatReturnLine(int[] indexes){
+    return indexes.length==0? "-" :
+            Arrays.stream(indexes).mapToObj(String::valueOf).collect(Collectors.joining(","));
   }
 
 

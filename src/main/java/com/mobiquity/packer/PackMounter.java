@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 public class PackMounter {
 
-    CombinationAlgorithm combination;
+    CombinationAlgorithm algorithm;
 
     public PackMounter(CombinationAlgorithm combinationAlgorithm) {
-        this.combination = combinationAlgorithm;
+        this.algorithm = combinationAlgorithm;
     }
 
     /**
@@ -29,7 +29,7 @@ public class PackMounter {
         int maxCost = -1;
 
         for (int i = 1; i <= N; i++) {
-            var combs = combination.combine(N,i);
+            var combs = algorithm.calculateCombinations(N,i);
             for (List<Integer> comb : combs) {
 
                 //mounting the pack, picking up the items accordingly with id combinations.
