@@ -23,14 +23,15 @@ public class Packer {
    * The application uses a Observable Pattern approach .
    * The observable calculates the items indexes combinations - only indexes.
    * The indexes' combination is passed to observer.
-   * The observer checks if the combination is the ideal based on rules of weight and cost
-   * After processing all combinations, the observer prints to the output
+   * The observer checks if the combination is the ideal based on rules of weight and cost.
+   * After processing all combinations, the observer prints to the output.
    * The API is scalable fo any combination algorithm implementation
    * -  To check it, comment CombinationRecursive observable and uncomment the
    * -  CombinationCommonApache and run tests */
   public static String pack(String filePath) throws APIException  {
     var file = new File(filePath);
     var packBuilder = new PackBuilder();
+    var output = new StringBuilder();
 
     Observable observable = new CombinationRecursive();
     //Observable observable = new CombinationCommonApache();
@@ -41,13 +42,14 @@ public class Packer {
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
         Pack pack = packBuilder.buildPackFromString(packLine);
         observable.setPack(pack);
-        createObserver(observable,pack);
+        var outputLineSolution = createObserverToLine(observable,pack);
+        output.append(outputLineSolution).append("\n");
       }));
 
-      return SingletonOutput.getInstance().toString();
+      return output.toString();
 
     } catch (Exception ex) {
-      throw new APIException("API error:",ex);
+      throw new APIException(ex.getMessage(),ex);
     }
   }
 
@@ -61,16 +63,16 @@ public class Packer {
    * @param observable the observable that sends the notifications for each combination
    * @param pack represents each line of the input file
    */
-  private static void createObserver(Observable observable, Pack pack) {
+  private static String createObserverToLine(Observable observable, Pack pack) {
     var concreteObserver = new ConcreteObserver(pack);
     observable.setObserver(concreteObserver);
     observable.runCombinations();
-    concreteObserver.printLineToOutput();
+    return concreteObserver.getFormattedOutputLine();
   }
 
 
   /**
-   * This method is a workaround to rethrow an APIException through a lambda function. It receives
+   * This method is just a workaround to rethrow an APIException through a lambda function. It receives
    * a customized consumer as a parameter. This consumer throws an APIException in its accept method.
    * */
   private static <T> Consumer<T> throwsAPIExceptionWrapper(APIExceptionConsumer<T, APIException> APIExceptionConsumer) {

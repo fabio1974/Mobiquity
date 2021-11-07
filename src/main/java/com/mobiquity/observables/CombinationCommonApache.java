@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 /**
  * Class to implement third part combination calculus (Apache Commons in this case).
- * This class is not used in the program. The gaol here
- * is just to show the extensibility by providing any algorithm.
- * The convertType method is not even performative. This was written just for completeness of tests.
- */
+ * This class is not used in the program. The goal here  is just to show the loose coupling
+ * and the extensibility by providing any different algorithm.
+ * This algorithm can be used by uncommenting one line in the Packer class
+ *  */
 public class CombinationCommonApache extends Observable {
 
     @Override
@@ -28,7 +28,8 @@ public class CombinationCommonApache extends Observable {
                     .map(it->it+1).boxed()
                     .collect(Collectors.toList());
 
-            //this line sends each combination to the observer
+            //like in the recursive algorithm, each time we find a different combination,
+            //we emit it to the observer
             notifyObserver(converted);
         }
     }

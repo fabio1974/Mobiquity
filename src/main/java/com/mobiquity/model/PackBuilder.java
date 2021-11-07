@@ -21,7 +21,7 @@ public class PackBuilder {
         //setting weight limit
         pack.setWeighLimit(Double.parseDouble(packChuncks[0]));
         if(pack.getWeighLimit()>=100)
-            throw new APIException("Weight limit should be < 100");
+            throw new APIException("Weight limit should be < 100!");
 
         //adding all available items from the file line
         for (String it : packChuncks[1].trim().split("\\s+")) {
