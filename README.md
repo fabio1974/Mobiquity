@@ -13,14 +13,14 @@ So to improve time complexity, which is O(n²) for the algorithm I implemented a
 
 ## Available Scripts
 
-This is a java gradle project, compiled using java version 11.0.10, 
-and jUnit 5.8.1 and stored as a public GitHub repository.
+This is a java lib gradle project, compiled using java version 11.0.10. 
+It uses jUnit 5.8.1 for tests, and its code is stored as a public GitHub repository.
 
 To clone the repository with a SSH key, you can run:
 
 #### `git clone git@github.com:fabio1974/Mobiquity.git`
 
-Then you must run gradle commands to clean and build the java resources. In a linux environment you can run:
+Then you must run gradle commands from the project directory. To clean and build the java resources, in a linux environment you can run:
 
 #### `./gradlew clean build`
 
@@ -48,4 +48,4 @@ Maven:
 
 Gradle:
 
-```implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'``` 
+`implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'` 
