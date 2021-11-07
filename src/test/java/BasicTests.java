@@ -2,9 +2,17 @@ import com.mobiquity.exception.APIException;
 import com.mobiquity.packer.Packer;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BasicTests {
+
 
 
 /*
@@ -34,14 +42,25 @@ public class BasicTests {
     }
 */
 
+
     @Test
     public void basicReturn() throws APIException {
         String r = "4\n" +
                 "-\n" +
                 "2,7\n" +
                 "8,9\n";
-        var filePath = "/home/fabiobarros/git/Mobiquity/src/test/resources/example_input";
+        var filePath =  getFilePath("example_input");
         assertEquals(r,Packer.pack(filePath));
     }
 
+    private String getFilePath(String fileName) {
+        URL resource = this.getClass().getResource(fileName);
+        try {
+            assert resource != null;
+            return Paths.get(resource.toURI()).toAbsolutePath().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

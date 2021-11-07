@@ -1,5 +1,9 @@
 package com.mobiquity.model;
 
+/**
+ * each instance represents a chunk from the second part of the file line like
+ * item = (1,53.38,€45)
+ */
 public class Item {
 
     private final int id;

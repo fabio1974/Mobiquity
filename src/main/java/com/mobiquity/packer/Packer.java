@@ -1,10 +1,9 @@
 package com.mobiquity.packer;
 
-import com.mobiquity.observables.CombinationRecursive;
-import com.mobiquity.observables.Observable;
+import com.mobiquity.model.PackBuilder;
+import com.mobiquity.observables.*;
 import com.mobiquity.exception.APIException;
 import com.mobiquity.exception.APIExceptionConsumer;
-import com.mobiquity.model.Item;
 import com.mobiquity.model.Pack;
 import com.mobiquity.observer.ConcreteObserver;
 
@@ -21,25 +20,28 @@ public class Packer {
   }
 
   /**
-   * Mounts the ideal package based on the rules of weight and max cost.
-   * I'm using a observable pattern to process the output.
+   * The application uses a Observable Pattern approach .
+   * The observable calculates the items indexes combinations - only indexes.
+   * The indexes' combination is passed to observer.
+   * The observer checks if the combination is the ideal based on rules of weight and cost
+   * After processing all combinations, the observer prints to the output
    * The API is scalable fo any combination algorithm implementation
-   * @param filePath the absolute path to the input file
-   * @return an string as specified at the output file
-   * @throws APIException
-   */
+   * -  To check it, comment CombinationRecursive observable and uncomment the
+   * -  CombinationCommonApache and run tests */
   public static String pack(String filePath) throws APIException  {
     var file = new File(filePath);
+    var packBuilder = new PackBuilder();
 
     Observable observable = new CombinationRecursive();
     //Observable observable = new CombinationCommonApache();
 
-    try (Stream<String> fileLines = Files.lines(file.toPath(), Charset.forName(StandardCharsets.UTF_8.name()))) {
+    try (Stream<String> fileLines = Files.lines(file.toPath(),Charset.forName(StandardCharsets.UTF_8.name()))) {
 
       //iterates over each line of the input file
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
-        Pack pack = buildPackFromString(packLine);
-        mountPackage(observable,pack);
+        Pack pack = packBuilder.buildPackFromString(packLine);
+        observable.setPack(pack);
+        createObserver(observable,pack);
       }));
 
       return SingletonOutput.getInstance().toString();
@@ -49,56 +51,22 @@ public class Packer {
     }
   }
 
-  private static void mountPackage(Observable observable, Pack pack) {
-    observable.setPack(pack);
+  /**
+   * Creates the concrete observer instance, passing the pack to it.
+   * This observer is responsible for two things:
+   * 1. mount the ideal package based on the rules of weight and max cost
+   * 2. print the answer to the output singleton StringBuilder
+   * A new concrete observer instance is necessary to clean its state
+   * after process each pack.
+   * @param observable the observable that sends the notifications for each combination
+   * @param pack represents each line of the input file
+   */
+  private static void createObserver(Observable observable, Pack pack) {
     var concreteObserver = new ConcreteObserver(pack);
     observable.setObserver(concreteObserver);
     observable.runCombinations();
     concreteObserver.printLineToOutput();
   }
-
-
-  /**
-   * This method builds a representation object from each line from input file.
-   * Each pack has its weight limit and all available items as in the file.
-   * @param packLine -> each string line from input file.
-   * @return a object instance of Pack
-   * @throws APIException
-   */
-  private static Pack buildPackFromString(String packLine) throws APIException {
-    var packChuncks = packLine.split(":");
-    var pack = new Pack();
-
-    //setting weight limit
-    pack.setWeighLimit(Double.parseDouble(packChuncks[0]));
-
-    //adding all available items from the file line
-    for (String it : packChuncks[1].trim().split("\\s+")) {
-      var itemChuncks = it.replaceAll("[()]", "").split(",");
-      Item item = buildItemFromStrings(itemChuncks);
-      pack.addAvailableItem(item);
-    }
-    return pack;
-  }
-
-
-  /**
-   * builds a instance of a Item from a string chunk
-   * @param itemChunks
-   * @return an instance of Item
-   * @throws APIException as a barrier for input file constraints
-   */
-  private static Item buildItemFromStrings(String[] itemChunks) throws APIException {
-    var item = new Item(
-            Integer.parseInt(itemChunks[0]),
-            Double.parseDouble(itemChunks[1]),
-            Integer.parseInt(itemChunks[2].replace("€", "")));
-    if(item.getCost()>100 || item.getWeigh()>100)
-      throw new APIException("Cost and weigh must be < 100!");
-    return item;
-  }
-
-
 
 
   /**
