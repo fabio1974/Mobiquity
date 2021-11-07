@@ -28,11 +28,11 @@ There are units and functional tests. To run them you can use:
 
 #### `./gradlew test`
 
-To install the lib in your maven local, and use it as a dependence, you need run
+To install the lib in your maven local, and use it as a dependence, you need run:
 
 #### `./gradlew publishToMavenLocal`
 
-Then, add the lib your dependencies:
+Then, to use the lib, add it to your java project dependencies:
 
 Maven:
 
@@ -48,4 +48,4 @@ Maven:
 
 Gradle:
 
-`implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'` 
+`implementation group:'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'` 
