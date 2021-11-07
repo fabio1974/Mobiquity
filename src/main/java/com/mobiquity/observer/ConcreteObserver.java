@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The concrete observer to solve each line of the input file.
+ * There is one instance of the class for each line.
+ */
 public class ConcreteObserver implements Observer{
     //represents the input file line being analysed
     private final Pack pack;
@@ -22,7 +26,7 @@ public class ConcreteObserver implements Observer{
     }
 
     /**
-     * Main point of an observer, represents the messages emitted from the observable
+     * Main point of an observer, represents arriving of the messages emitted from the observable
      * This method try to find the max cost from all combinations received by the instance
      * @param combination of indexes taken from all available pack indexes
      */
@@ -59,7 +63,7 @@ public class ConcreteObserver implements Observer{
     }
 
     /**
-     * final string representation of a line in the output
+     * final string representation of a line in the output, from idealPackIndexes set
      * */
     public String getFormattedOutputLine(){
         return idealPackIndexes.length==0? "-" :

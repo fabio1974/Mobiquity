@@ -20,7 +20,7 @@ public abstract class Observable {
     public Observable() {
     }
 
-    //as a contract,any combination algorithm (a different concrete observable)
+    //as a contract,any combination algorithm (as a different concrete observable)
     //must implement this method and emit each combination inside it
     //through notifyObserver
     public abstract void runCombinations();

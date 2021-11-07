@@ -1,6 +1,5 @@
 package com.mobiquity.packer;
 
-import com.mobiquity.model.PackBuilder;
 import com.mobiquity.observables.*;
 import com.mobiquity.exception.APIException;
 import com.mobiquity.exception.APIExceptionConsumer;
@@ -30,7 +29,7 @@ public class Packer {
    * -  CombinationCommonApache and run tests */
   public static String pack(String filePath) throws APIException  {
     var file = new File(filePath);
-    var packBuilder = new PackBuilder();
+    var packParser = new PackParser();
     var output = new StringBuilder();
 
     Observable observable = new CombinationRecursive();
@@ -40,9 +39,9 @@ public class Packer {
 
       //iterates over each line of the input file
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
-        Pack pack = packBuilder.buildPackFromString(packLine);
+        Pack pack = packParser.buildPackFromString(packLine);
         observable.setPack(pack);
-        var outputLineSolution = createObserverToLine(observable,pack);
+        var outputLineSolution = createObserverInstanceToLine(observable,pack);
         output.append(outputLineSolution).append("\n");
       }));
 
@@ -57,13 +56,13 @@ public class Packer {
    * Creates the concrete observer instance, passing the pack to it.
    * This observer is responsible for two things:
    * 1. mount the ideal package based on the rules of weight and max cost
-   * 2. print the answer to the output singleton StringBuilder
+   * 2. returns the String answer for each line
    * A new concrete observer instance is necessary to clean its state
    * after process each pack.
    * @param observable the observable that sends the notifications for each combination
    * @param pack represents each line of the input file
    */
-  private static String createObserverToLine(Observable observable, Pack pack) {
+  private static String createObserverInstanceToLine(Observable observable, Pack pack) {
     var concreteObserver = new ConcreteObserver(pack);
     observable.setObserver(concreteObserver);
     observable.runCombinations();

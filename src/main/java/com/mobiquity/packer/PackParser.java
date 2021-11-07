@@ -1,12 +1,14 @@
-package com.mobiquity.model;
+package com.mobiquity.packer;
 
 import com.mobiquity.exception.APIException;
+import com.mobiquity.model.Item;
+import com.mobiquity.model.Pack;
 
 /**
  * class responsible for parsing a line from the input file to a Pack object with its
  * all available items
  */
-public class PackBuilder {
+public class PackParser {
     /**
      * This method builds a representation object from each line from input file.
      * Each pack has its weight limit and all available items as in the file.
