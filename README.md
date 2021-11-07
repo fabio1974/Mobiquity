@@ -6,7 +6,7 @@
 
 From the problem statement, it is clear that the last item in each package could be, for example, the solution. So it looks necessary to go through all the combinations of available items to find the best solution, with the highest cost, a total weight below the package limit, and obey the other established restrictions.
 
-The idea was then to find all item combinations taking into account their indices only, to make processing lighter. Once each combination is found, the package calculation is done and if is 'better' than the last one, it takes its place.
+The idea was then to find all item combinations taking into account their indices only, to make processing lighter. Once each combination is found, the package calculation is done, and if it is 'better' than the last one, it takes its place.
 
 So to improve time complexity, which is O(n²) for the algorithm I implemented and explained [here](RECURSIVE_COMBINATION.md), I decided not to store the combinations and loop them later. The moment I find the combination, a notification message is sent to an Observer who will do the job of checking if the solution is the best for the package. This was the reason for using the Observer Pattern: not over loop the combinations and save processing.
 
@@ -48,4 +48,4 @@ Maven:
 
 Gradle:
 
-`implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'`
+```implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'``` 
