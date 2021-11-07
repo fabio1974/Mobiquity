@@ -27,11 +27,11 @@
         {
           "name": "implementation-1.0-SNAPSHOT.jar",
           "url": "implementation-1.0-SNAPSHOT.jar",
-          "size": 5164,
-          "sha512": "462bc52561a9c81031f811664d185a89dc67f7b50464ed9e440d3ac2c4834eb6f2b383106a30290f87cf0e4a4d3c326100dbc1ecb3abdf2c6b2b4da6ada1893c",
-          "sha256": "23a0c2df11725c48a3f47f2378b382913f5634927ad956bd3a6f899018567427",
-          "sha1": "8df30d282b97853f77f62257c034a255abffb4d6",
-          "md5": "5809b7f963e0636c2f73c95162d11444"
+          "size": 13249,
+          "sha512": "f8ba26749763023c9f5142748c3ffe00cba54204b05fe7700b49de12ee4670db32c3e05aca973998f1357fca23c27418a6fccea50a3a13deed762433d371cb66",
+          "sha256": "485834e8cbcee39d7c53cf28045622f0a6eb6f9c6c83c3d27cf417a00098a9be",
+          "sha1": "47fa40536e4ef81e7e515ce6d418e994cd0f3d62",
+          "md5": "9fc562a05dd6df9dc4dc207a3cdf0332"
         }
       ]
     },
@@ -44,15 +44,31 @@
         "org.gradle.libraryelements": "jar",
         "org.gradle.usage": "java-runtime"
       },
+      "dependencies": [
+        {
+          "group": "com.google.guava",
+          "module": "guava",
+          "version": {
+            "requires": "27.0.1-jre"
+          }
+        },
+        {
+          "group": "org.apache.commons",
+          "module": "commons-math3",
+          "version": {
+            "requires": "3.6.1"
+          }
+        }
+      ],
       "files": [
         {
           "name": "implementation-1.0-SNAPSHOT.jar",
           "url": "implementation-1.0-SNAPSHOT.jar",
-          "size": 5164,
-          "sha512": "462bc52561a9c81031f811664d185a89dc67f7b50464ed9e440d3ac2c4834eb6f2b383106a30290f87cf0e4a4d3c326100dbc1ecb3abdf2c6b2b4da6ada1893c",
-          "sha256": "23a0c2df11725c48a3f47f2378b382913f5634927ad956bd3a6f899018567427",
-          "sha1": "8df30d282b97853f77f62257c034a255abffb4d6",
-          "md5": "5809b7f963e0636c2f73c95162d11444"
+          "size": 13249,
+          "sha512": "f8ba26749763023c9f5142748c3ffe00cba54204b05fe7700b49de12ee4670db32c3e05aca973998f1357fca23c27418a6fccea50a3a13deed762433d371cb66",
+          "sha256": "485834e8cbcee39d7c53cf28045622f0a6eb6f9c6c83c3d27cf417a00098a9be",
+          "sha1": "47fa40536e4ef81e7e515ce6d418e994cd0f3d62",
+          "md5": "9fc562a05dd6df9dc4dc207a3cdf0332"
         }
       ]
     }

@@ -16,25 +16,36 @@ So to improve time complexity, which is O(n²) for the algorithm I implemented a
 This is a java gradle project, compiled using java version 11.0.10, 
 and jUnit 5.8.1 and stored as a public GitHub repository.
 
-To clone the repository, you can run:
+To clone the repository with a SSH key, you can run:
 
-#### `npm start`
+#### `git clone git@github.com:fabio1974/Mobiquity.git`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Then you must run gradle commands to clean and build the java resources. In a linux environment you can run:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### `./gradlew clean build`
 
-### `npm test`
+There are units and functional tests. To run them you can use:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### `./gradlew test`
 
-### `npm run build`
+To install the lib in your maven local, and use it as a dependence, you need run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### `./gradlew publishToMavenLocal`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Then, add the lib your dependencies:
+
+Maven:
+
+```xml
+
+<dependency>
+    <groupId>com.mobiquity</groupId>
+    <artifactId>implementation</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+
+```
+
+Gradle:
+
+`implementation group 'com.mobiquity', name:'implementation', version:'1.0-SNAPSHOT'`
