@@ -1,19 +1,18 @@
 package com.mobiquity.packer;
 
-import com.mobiquity.combinations.AlgIterative;
-import com.mobiquity.combinations.CombinationAlgorithm;
+import com.mobiquity.observables.CombinationRecursive;
+import com.mobiquity.observables.Observable;
 import com.mobiquity.exception.APIException;
 import com.mobiquity.exception.APIExceptionConsumer;
 import com.mobiquity.model.Item;
 import com.mobiquity.model.Pack;
+import com.mobiquity.observer.ConcreteObserver;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Packer {
@@ -22,36 +21,41 @@ public class Packer {
   }
 
   /**
-   * Exposed lib method to mount the ideal package based on the rules of weight and max cost.
-   * I'm using a strategy pattern to instantiate a different algorithm to calculate combinations.
-   * So, any combination algorithm can be injected into the PackMounter
+   * Mounts the ideal package based on the rules of weight and max cost.
+   * I'm using a observable pattern to process the output.
+   * The API is scalable fo any combination algorithm implementation
    * @param filePath the absolute path to the input file
    * @return an string as specified at the output file
    * @throws APIException
    */
   public static String pack(String filePath) throws APIException  {
-
     var file = new File(filePath);
-    StringBuilder sb = new StringBuilder();
-    CombinationAlgorithm combinationAlgorithm = new AlgIterative(); //or new AlgApache()  or  new new AlgGuava()
-    PackMounter mounter = new PackMounter(combinationAlgorithm);
+
+    Observable observable = new CombinationRecursive();
+    //Observable observable = new CombinationCommonApache();
 
     try (Stream<String> fileLines = Files.lines(file.toPath(), Charset.forName(StandardCharsets.UTF_8.name()))) {
 
       //iterates over each line of the input file
       fileLines.forEach(throwsAPIExceptionWrapper(packLine -> {
-        Pack pack = buildPack(packLine);
-        int[] mountedPackIndexes = mounter.mount(pack);
-        sb.append(formatReturnLine(mountedPackIndexes)).append("\n");
+        Pack pack = buildPackFromString(packLine);
+        mountPackage(observable,pack);
       }));
 
-      return sb.toString();
+      return SingletonOutput.getInstance().toString();
 
     } catch (Exception ex) {
       throw new APIException("API error:",ex);
     }
   }
 
+  private static void mountPackage(Observable observable, Pack pack) {
+    observable.setPack(pack);
+    var concreteObserver = new ConcreteObserver(pack);
+    observable.setObserver(concreteObserver);
+    observable.runCombinations();
+    concreteObserver.printLineToOutput();
+  }
 
 
   /**
@@ -61,7 +65,7 @@ public class Packer {
    * @return a object instance of Pack
    * @throws APIException
    */
-  private static Pack buildPack(String packLine) throws APIException {
+  private static Pack buildPackFromString(String packLine) throws APIException {
     var packChuncks = packLine.split(":");
     var pack = new Pack();
 
@@ -71,7 +75,7 @@ public class Packer {
     //adding all available items from the file line
     for (String it : packChuncks[1].trim().split("\\s+")) {
       var itemChuncks = it.replaceAll("[()]", "").split(",");
-      Item item = buildItem(itemChuncks);
+      Item item = buildItemFromStrings(itemChuncks);
       pack.addAvailableItem(item);
     }
     return pack;
@@ -79,12 +83,12 @@ public class Packer {
 
 
   /**
-   * builds a instance of a Item from a string chunk from the file
+   * builds a instance of a Item from a string chunk
    * @param itemChunks
    * @return an instance of Item
    * @throws APIException as a barrier for input file constraints
    */
-  private static Item buildItem(String[] itemChunks) throws APIException {
+  private static Item buildItemFromStrings(String[] itemChunks) throws APIException {
     var item = new Item(
             Integer.parseInt(itemChunks[0]),
             Double.parseDouble(itemChunks[1]),
@@ -94,14 +98,6 @@ public class Packer {
     return item;
   }
 
-
-  /**
-   * String representation of a line in the output
-   * */
-  private static String formatReturnLine(int[] indexes){
-    return indexes.length==0? "-" :
-            Arrays.stream(indexes).mapToObj(String::valueOf).collect(Collectors.joining(","));
-  }
 
 
 
@@ -118,5 +114,4 @@ public class Packer {
       }
     };
   }
-
 }

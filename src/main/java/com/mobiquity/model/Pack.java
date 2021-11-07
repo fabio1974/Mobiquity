@@ -6,15 +6,14 @@ import java.util.*;
 
 public class Pack {
 
-    private final List<Item> avalilableItems = new ArrayList<Item>();
-
+    private final List<Item> availableItems = new ArrayList<Item>();
     private Double weighLimit = 0.0;
 
     public Pack() {
     }
 
-    public List<Item> getAvalilableItems() {
-        return avalilableItems;
+    public List<Item> getAvailableItems() {
+        return availableItems;
     }
 
     public void setWeighLimit(Double weighLimit) {
@@ -26,8 +25,8 @@ public class Pack {
     }
 
     public void addAvailableItem(Item item) throws APIException {
-        if(avalilableItems.size()>14)
+        if(availableItems.size()>14)
             throw new APIException("Pack with more than 15 items ");
-        avalilableItems.add(item);
+        availableItems.add(item);
     }
 }

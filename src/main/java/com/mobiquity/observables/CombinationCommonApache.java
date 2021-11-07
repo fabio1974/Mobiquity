@@ -1,8 +1,7 @@
-package com.mobiquity.combinations;
+package com.mobiquity.observables;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -14,21 +13,23 @@ import java.util.stream.Collectors;
  * is just to show the extensibility by providing any algorithm.
  * The convertType method is not even performative. This was written just for completeness of tests.
  */
-public class AlgApache implements CombinationAlgorithm{
+public class CombinationCommonApache extends Observable {
 
     @Override
-    public List<List<Integer>> calculateCombinations(int N, int R) {
-        Iterator<int[]> combinations = CombinatoricsUtils.combinationsIterator(N, R);
-        return convertType(combinations);
+    public void runCombinations() {
+        availableItemIndexes.forEach(R-> combs(availableItemIndexes.size(),R));
     }
 
-    private List<List<Integer>> convertType(Iterator<int[]> combinations) {
-        List<List<Integer>> r =  new ArrayList<>();
+    private void combs(int N, int R) {
+        Iterator<int[]> combinations = CombinatoricsUtils.combinationsIterator(N, R);
         while (combinations.hasNext()) {
             int[] combination = combinations.next();
-            List<Integer> list =  Arrays.stream(combination).map(it->it+1).boxed().collect(Collectors.toList());
-            r.add(list);
+            List<Integer> converted =  Arrays.stream(combination)
+                    .map(it->it+1).boxed()
+                    .collect(Collectors.toList());
+
+            //this line sends each combination to the observer
+            notifyObserver(converted);
         }
-        return r;
     }
 }

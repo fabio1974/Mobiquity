@@ -2,9 +2,9 @@ package com.mobiquity.model;
 
 public class Item {
 
-    private int id;
-    private double weigh;
-    private int cost;
+    private final int id;
+    private final double weigh;
+    private final int cost;
 
     public Item(int id, double weigh, int cost) {
         this.id = id;
@@ -16,22 +16,11 @@ public class Item {
         return weigh;
     }
 
-    public int getCost() {return cost;}
+    public int getCost() {
+        return cost;
+    }
 
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setWeigh(double weigh) {
-        this.weigh = weigh;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
 }
