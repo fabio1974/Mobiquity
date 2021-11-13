@@ -26,7 +26,7 @@ public class PackParser {
             throw new APIException("Weight limit should be < 100!");
 
         //adding all available items from the file line
-        for (String it : packChuncks[1].trim().split("\\s+")) {
+        for (String it : packChuncks[1].replaceAll("\\s+","").split("\\)\\(")) {
             var itemChuncks = it.replaceAll("[()]", "").split(",");
             Item item = buildItemFromStrings(itemChuncks);
             pack.addAvailableItem(item);
