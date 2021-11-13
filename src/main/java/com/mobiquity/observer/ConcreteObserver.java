@@ -19,7 +19,7 @@ public class ConcreteObserver implements Observer{
     //they are used to find the best pack index combination
     private int[] idealPackIndexes = {};
     private double lastMaxPackWeigth = -1;
-    private int maxCost = -1;
+    private double maxCost = -1;
 
     public ConcreteObserver(Pack pack){
         this.pack = pack;
@@ -42,7 +42,7 @@ public class ConcreteObserver implements Observer{
 
         if (weigth <= pack.getWeighLimit() && weigth <= 100.0) {
             //cost of the mounted pack.
-            var cost = mountedPack.stream().mapToInt(Item::getCost).sum();
+            var cost = mountedPack.stream().mapToDouble(Item::getCost).sum();
 
             //if we have two equals max cost configurations with acceptable weight, we choose the lighter one
             boolean chooseTheLighter = cost == maxCost && weigth < lastMaxPackWeigth;
@@ -56,7 +56,7 @@ public class ConcreteObserver implements Observer{
     /**
      * updates the state of the instance to the best solution so far.
      */
-    private void setIdealPackage(List<Item> mountedPack, double weigth, int cost) {
+    private void setIdealPackage(List<Item> mountedPack, double weigth, double cost) {
         maxCost = cost;
         idealPackIndexes = mountedPack.stream().mapToInt(Item::getId).toArray();
         lastMaxPackWeigth = weigth;

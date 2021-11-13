@@ -8,9 +8,9 @@ public class Item {
 
     private final int id;
     private final double weigh;
-    private final int cost;
+    private final double cost;
 
-    public Item(int id, double weigh, int cost) {
+    public Item(int id, double weigh, double cost) {
         this.id = id;
         this.weigh = weigh;
         this.cost = cost;
@@ -20,7 +20,7 @@ public class Item {
         return weigh;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 

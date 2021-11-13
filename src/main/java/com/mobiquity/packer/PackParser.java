@@ -45,7 +45,7 @@ public class PackParser {
         var item = new Item(
                 Integer.parseInt(itemChunks[0]),
                 Double.parseDouble(itemChunks[1]),
-                Integer.parseInt(itemChunks[2].replace("€", "")));
+                Double.parseDouble(itemChunks[2].replace("€", "")));
         if(item.getCost()>100 || item.getWeigh()>100)
             throw new APIException("Cost and weigh must be < 100!");
         return item;
