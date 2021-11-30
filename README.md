@@ -4,7 +4,7 @@
 
 ## Aproaching the problem
 
-From the problem statement, it is clear that the last item in each package could be, for example, the solution. So it looks necessary to go through all the combinations of available items to find the best solution, with the highest cost, a total weight below the package limit, and obey the other established restrictions.
+From the [problem statement](Packaging%20Challenge.pdf), it is clear that the last item in each package could be, for example, the solution. So it looks necessary to go through all the combinations of available items to find the best solution, with the highest cost, a total weight below the package limit, and obey the other established restrictions.
 
 The idea was then to find all item combinations taking into account their indices only, to make processing lighter. Once each combination is found, the package calculation is done, and if it is 'better' than the last one, it takes its place.
 
